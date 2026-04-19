@@ -1,5 +1,4 @@
 from collections import defaultdict, deque
-
 from ryu.base import app_manager
 from ryu.controller import ofp_event
 from ryu.controller.handler import CONFIG_DISPATCHER, DEAD_DISPATCHER
@@ -37,7 +36,7 @@ class LinkFailureRecovery(app_manager.RyuApp):
 
     @set_ev_cls(ofp_event.EventOFPSwitchFeatures, CONFIG_DISPATCHER)
     def switch_features_handler(self, ev):
-        """Install the table-miss flow so unknown traffic reaches PacketIn."""
+        #Install the table-miss flow so unknown traffic reaches PacketIn.
         datapath = ev.msg.datapath
         parser = datapath.ofproto_parser
         ofproto = datapath.ofproto
@@ -54,7 +53,7 @@ class LinkFailureRecovery(app_manager.RyuApp):
 
     @set_ev_cls(ofp_event.EventOFPStateChange, [MAIN_DISPATCHER, DEAD_DISPATCHER])
     def state_change_handler(self, ev):
-        """Track currently connected switches by datapath ID."""
+        #Track currently connected switches by datapath ID.
         datapath = ev.datapath
 
         if ev.state == MAIN_DISPATCHER:
@@ -114,7 +113,7 @@ class LinkFailureRecovery(app_manager.RyuApp):
 
     @set_ev_cls(ofp_event.EventOFPPacketIn, MAIN_DISPATCHER)
     def packet_in_handler(self, ev):
-        """Learn hosts and install shortest-path forwarding rules."""
+        #Learn hosts and install shortest-path forwarding rules.
         msg = ev.msg
         datapath = msg.datapath
         dpid = datapath.id
@@ -197,7 +196,7 @@ class LinkFailureRecovery(app_manager.RyuApp):
         self.logger.debug("Topology refreshed: switches=%s links=%s", switch_ids, link_count)
 
     def _remove_link_from_graph(self, src_dpid, dst_dpid):
-        """Remove both directions of a failed physical link from adjacency."""
+        #Remove both directions of a failed physical link from adjacency.
         src_port = self._port_to_neighbor(src_dpid, dst_dpid)
         dst_port = self._port_to_neighbor(dst_dpid, src_dpid)
         self.adjacency[src_dpid].pop(dst_dpid, None)
@@ -206,7 +205,7 @@ class LinkFailureRecovery(app_manager.RyuApp):
         self.link_ports[dst_dpid].discard(dst_port)
 
     def _recover_affected_paths(self, failed_edge):
-        """Delete old flows and install alternate paths for affected host pairs."""
+        #Delete old flows and install alternate paths for affected host pairs.
         affected = []
         for host_pair, path in list(self.installed_paths.items()):
             if self._path_uses_edge(path, failed_edge):
@@ -270,7 +269,7 @@ class LinkFailureRecovery(app_manager.RyuApp):
         return None
 
     def _install_path(self, path, src_mac, dst_mac, src_port, dst_port):
-        """Install match-action flows along a switch path."""
+        #Install match-action flows along a switch path.
         if not path:
             return
 
@@ -318,7 +317,7 @@ class LinkFailureRecovery(app_manager.RyuApp):
         )
 
     def _delete_host_pair_flows(self, src_mac, dst_mac):
-        """Remove stale flows for one host pair from all connected switches."""
+        #Remove stale flows for one host pair from all connected switches.
         for datapath in self.datapaths.values():
             parser = datapath.ofproto_parser
             ofproto = datapath.ofproto

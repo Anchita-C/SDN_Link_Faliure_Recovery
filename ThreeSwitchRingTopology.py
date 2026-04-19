@@ -1,6 +1,5 @@
 from mininet.topo import Topo
 
-
 class ThreeSwitchRingTopo(Topo):
     def build(self):
         s1 = self.addSwitch("s1")
@@ -20,4 +19,4 @@ class ThreeSwitchRingTopo(Topo):
         self.addLink(s1, s3)
 
 
-topos = {"threering": ThreeSwitchRingTopo}
+topos = {"three_ring": ThreeSwitchRingTopo}

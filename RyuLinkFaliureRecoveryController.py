@@ -11,7 +11,7 @@ from ryu.topology.api import get_link, get_switch
 
 
 class LinkFailureRecovery(app_manager.RyuApp):
-    """Learning switch with dynamic shortest-path rerouting."""
+    #Learning switch with dynamic shortest-path rerouting.
 
     OFP_VERSIONS = [ofproto_v1_3.OFP_VERSION]
 
@@ -376,7 +376,7 @@ class LinkFailureRecovery(app_manager.RyuApp):
         datapath.send_msg(out)
 
     def _flood_to_access_ports(self, msg):
-        """Flood unknown or broadcast traffic only to host-facing ports."""
+        #Flood unknown or broadcast traffic only to host-facing ports.
         ingress_dpid = msg.datapath.id
         ingress_port = msg.match["in_port"]
 
@@ -434,7 +434,7 @@ class LinkFailureRecovery(app_manager.RyuApp):
 
     @staticmethod
     def _path_uses_edge(path, edge):
-        """Check both directions because Ryu may report one directed edge."""
+        #Check both directions because Ryu may report one directed edge.
         src_dpid, dst_dpid = edge
         for left, right in zip(path, path[1:]):
             if (left, right) == (src_dpid, dst_dpid):

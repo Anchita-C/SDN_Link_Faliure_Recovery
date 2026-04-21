@@ -41,5 +41,21 @@ h1 --- s1 --- s2
 
 ## Commands for execution
 
+1. starting pox controller
+
+cd ~/pox
+./pox.py openflow.of_01 ext.controller log.level --DEBUG
+
+2. Run the Mininet Topology
+
+cd ~/Desktop/SDN_Link_Faliure_Recovery
+sudo python3 topology.py
+
+3. Test Connectivity
+
+pingall
+link s1 s2 down 
+ink s1 s3 down
+
 
 
